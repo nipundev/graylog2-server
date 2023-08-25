@@ -34,15 +34,26 @@ type Props = {
   returnType?: RuleBuilderTypes,
 }
 
-const OutputVariable = styled.p(({ theme }) => css`
-  margin-left: ${theme.spacings.xxs};
-  margin-bottom: 0;
-  margin-top: ${theme.spacings.sm};
+// const OutputVariable = styled.p(({ theme }) => css`
+//   margin-left: ${theme.spacings.xxs};
+//   margin-bottom: 0;
+//   margin-top: ${theme.spacings.sm};
+// `);
+
+// const OutputIcon = styled(Icon)(({ theme }) => css`
+//   margin-right: ${theme.spacings.sm};
+// `);
+
+const OutputVariable = styled.span(({ theme }) => css`
+  background-color: ${theme.colors.variant.lighter.default};
+  font-weight: bold;
+  font-size: ${theme.fonts.size.small};
+  padding: ${theme.spacings.xxs} ${theme.spacings.xs};
 `);
 
-const OutputIcon = styled(Icon)(({ theme }) => css`
-  margin-right: ${theme.spacings.sm};
-`);
+const StepTitle = styled.p`
+  margin-bottom: 0;
+`;
 
 const TypeLabel = styled(Label)(({ theme }) => css`
   margin-left: ${theme.spacings.xs};
@@ -85,19 +96,19 @@ const RuleBlockDisplay = ({ block, negatable, onEdit, onDelete, onNegate, return
     <Row>
       {block?.outputvariable && (
       <Col xs={2} md={1}>
-        <Label bsStyle="primary">
+        <OutputVariable>
           {`$${block?.outputvariable}`}
-        </Label>
+        </OutputVariable>
       </Col>
       )}
       <Col xs={6} md={block?.outputvariable ? 8 : 10}>
         <Row>
           <Col md={12}>
-            <p>
+            <StepTitle>
               {negatable
-              && <NegationButton bsStyle="primary" $negate={block?.negate ? 1 : 0} onClick={(e) => { e.target.blur(); onNegate(); }}>Not</NegationButton>}
+              && <NegationButton bsSize="xs" bsStyle="primary" $negate={block?.negate ? 1 : 0} onClick={(e) => { e.target.blur(); onNegate(); }}>Not</NegationButton>}
               {block?.step_title}
-            </p>
+            </StepTitle>
 
             {/* {block?.outputvariable && (
             <OutputVariable>
@@ -127,7 +138,7 @@ const RuleBlockDisplay = ({ block, negatable, onEdit, onDelete, onNegate, return
       )}
       <Col xs={3} md={2} className="text-right">
         <IconButton name="edit" onClick={onEdit} title="Edit" />
-        <IconButton name="trash-alt" onClick={onDelete} title="Delete" />
+        <IconButton name="circle-minus" onClick={onDelete} title="Delete" />
       </Col>
     </Row>
   );

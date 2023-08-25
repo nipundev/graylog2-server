@@ -28,7 +28,7 @@ type Props = {
 
 const Error = styled.p(({ theme }) => css`
   color: ${theme.colors.variant.danger};
-  margin-bottom: ${theme.spacings.xs};
+  margin-top: ${theme.spacings.xs};
 `);
 
 const Errors = ({ objectWithErrors } : Props) => {

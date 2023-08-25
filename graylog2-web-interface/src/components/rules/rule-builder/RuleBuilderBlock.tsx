@@ -31,8 +31,8 @@ import { getDictForFunction } from './helpers';
 const BlockContainer = styled.div<{ $hasErrors: boolean }>(({ theme, $hasErrors }) => css`
   // border-color: ${$hasErrors ? theme.colors.variant.lighter.danger : theme.colors.variant.lighter.default};
   // padding: ${theme.spacings.md};
-  margin-bottom: ${theme.spacings.xs};
-  margin-top: ${theme.spacings.xs};
+  margin-bottom: ${theme.spacings.sm};
+  margin-top: ${theme.spacings.sm};
 `);
 
 type Props = {
