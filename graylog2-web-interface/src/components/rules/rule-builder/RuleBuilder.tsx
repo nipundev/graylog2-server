@@ -20,7 +20,7 @@ import ObjectID from 'bson-objectid';
 
 import useHistory from 'routing/useHistory';
 import Routes from 'routing/Routes';
-import { Row, Col, Button } from 'components/bootstrap';
+import { Row, Col, Button, Panel } from 'components/bootstrap';
 import useRuleBuilder from 'hooks/useRuleBuilder';
 import { ConfirmDialog, FormSubmit } from 'components/common';
 import { getPathnameWithoutId } from 'util/URLUtils';
@@ -42,16 +42,27 @@ import RuleSimulation from '../RuleSimulation';
 import { PipelineRulesContext } from '../RuleContext';
 
 const ActionsCol = styled(Col)`
-  margin-top: 50px;
+  margin-top: 20px;
 `;
 
 const RuleBuilderCol = styled(Col)`
   display: flex;
   justify-content: space-between;
+  margin-bottom: 10px;
 `;
 
-const SubTitle = styled.label`
-  color: #aaa;
+const Headline = styled.h4`
+  margin-botttom: 20px;
+`;
+
+const Subheadline = styled.h5`
+  margin-bottom: 10px;  
+  margin-top: 20px;
+`;
+
+const RuleFormCol = styled(Col)`
+  margin-bottom: 10px;  
+
 `;
 
 const RuleBuilder = () => {
@@ -77,6 +88,8 @@ const RuleBuilder = () => {
   const [blockToDelete, setBlockToDelete] = useState<{ orderIndex: number, type: BlockType } | null>(null);
   const [ruleSourceCodeToShow, setRuleSourceCodeToShow] = useState<RuleBuilderRule | null>(null);
   const [showConfirmSourceCodeEditor, setShowConfirmSourceCodeEditor] = useState<boolean>(false);
+  const [conditionsExpanded] = useState<boolean>(true);
+  const [actionsExpanded] = useState<boolean>(true);
 
   useEffect(() => {
     if (initialRule) {
@@ -274,12 +287,12 @@ const RuleBuilder = () => {
   return (
     <form onSubmit={(e) => handleSave(e, true)}>
       <Row className="content">
-        <Col xs={12}>
+        <RuleFormCol xs={12}>
           <RuleBuilderForm rule={rule}
                            onChange={setRule} />
-        </Col>
-        <RuleBuilderCol xs={4}>
-          <label htmlFor="rule_builder">Rule Builder</label>
+        </RuleFormCol>
+        <RuleBuilderCol xs={6}>
+          <Headline>Rule Builder</Headline>
           <Button bsStyle="info"
                   bsSize="small"
                   title={initialRule ? 'Convert Rule Builder to Source Code' : 'Use Source Code Editor'}
@@ -301,58 +314,88 @@ const RuleBuilder = () => {
             {initialRule ? 'Convert to Source Code' : 'Source Code Editor'}
           </Button>
         </RuleBuilderCol>
-        <Col xs={12}>
-          <Row>
-            <Col xs={4}>
-              <SubTitle htmlFor="rule_builder_conditions">Conditions</SubTitle>
-              {rule.rule_builder.conditions.map((condition, index) => (
-                // eslint-disable-next-line react/no-array-index-key
-                <RuleBuilderBlock key={index}
-                                  blockDict={conditionsDict || []}
-                                  block={condition}
-                                  order={index}
-                                  type="condition"
-                                  addBlock={addBlock}
-                                  updateBlock={updateBlock}
-                                  deleteBlock={() => setBlockToDelete({ orderIndex: index, type: 'condition' })} />
-              ))}
-              <RuleBuilderBlock blockDict={conditionsDict || []}
-                                order={newConditionBlockIndex}
-                                type="condition"
-                                addBlock={addBlock}
-                                updateBlock={updateBlock}
-                                deleteBlock={() => setBlockToDelete({
-                                  orderIndex: newConditionBlockIndex,
-                                  type: 'condition',
-                                })} />
+        <Row>
+          <Col xs={12}>
+            <Col xs={6}>
+              <Row>
+                <Col xs={12}>
+                  <Panel expanded={conditionsExpanded}>
+                    <Panel.Heading>
+                      <Panel.Title toggle>
+                        When
+                      </Panel.Title>
+                    </Panel.Heading>
+                    <Panel.Collapse>
+                      <Panel.Body>
+                        {rule.rule_builder.conditions.map((condition, index) => (
+                          // eslint-disable-next-line react/no-array-index-key
+                          <RuleBuilderBlock key={index}
+                                            blockDict={conditionsDict || []}
+                                            block={condition}
+                                            order={index}
+                                            type="condition"
+                                            addBlock={addBlock}
+                                            updateBlock={updateBlock}
+                                            deleteBlock={() => setBlockToDelete({ orderIndex: index, type: 'condition' })} />
+                        ))}
+                        <RuleBuilderBlock blockDict={conditionsDict || []}
+                                          order={newConditionBlockIndex}
+                                          type="condition"
+                                          addBlock={addBlock}
+                                          updateBlock={updateBlock}
+                                          deleteBlock={() => setBlockToDelete({
+                                            orderIndex: newConditionBlockIndex,
+                                            type: 'condition',
+                                          })} />
+                      </Panel.Body>
+                    </Panel.Collapse>
+                  </Panel>
+                  {/* <Subheadline>Conditions</Subheadline> */}
+                </Col>
+              </Row>
+              <Row>
+                <Col xs={12}>
+                  <Panel expanded={actionsExpanded}>
+                    <Panel.Heading>
+                      <Panel.Title toggle>
+                        Then
+                      </Panel.Title>
+                    </Panel.Heading>
+                    <Panel.Collapse>
+                      <Panel.Body>
+                        {rule.rule_builder.actions.map((action, index) => (
+                          // eslint-disable-next-line react/no-array-index-key
+                          <RuleBuilderBlock key={index}
+                                            blockDict={actionsDict || []}
+                                            block={action}
+                                            order={index}
+                                            type="action"
+                                            outputVariableList={outputVariableList()}
+                                            addBlock={addBlock}
+                                            updateBlock={updateBlock}
+                                            deleteBlock={() => setBlockToDelete({ orderIndex: index, type: 'action' })} />
+                        ))}
+                        <RuleBuilderBlock blockDict={actionsDict || []}
+                                          order={newActionBlockIndex}
+                                          type="action"
+                                          outputVariableList={outputVariableList()}
+                                          addBlock={addBlock}
+                                          updateBlock={updateBlock}
+                                          deleteBlock={() => setBlockToDelete({ orderIndex: newActionBlockIndex, type: 'action' })} />
+                      </Panel.Body>
+                    </Panel.Collapse>
+                  </Panel>
+                  {/* <Subheadline>Actions</Subheadline> */}
+
+                </Col>
+              </Row>
+
             </Col>
-            <Col xs={4}>
-              <SubTitle htmlFor="rule_builder_actions">Actions</SubTitle>
-              {rule.rule_builder.actions.map((action, index) => (
-                // eslint-disable-next-line react/no-array-index-key
-                <RuleBuilderBlock key={index}
-                                  blockDict={actionsDict || []}
-                                  block={action}
-                                  order={index}
-                                  type="action"
-                                  outputVariableList={outputVariableList()}
-                                  addBlock={addBlock}
-                                  updateBlock={updateBlock}
-                                  deleteBlock={() => setBlockToDelete({ orderIndex: index, type: 'action' })} />
-              ))}
-              <RuleBuilderBlock blockDict={actionsDict || []}
-                                order={newActionBlockIndex}
-                                type="action"
-                                outputVariableList={outputVariableList()}
-                                addBlock={addBlock}
-                                updateBlock={updateBlock}
-                                deleteBlock={() => setBlockToDelete({ orderIndex: newActionBlockIndex, type: 'action' })} />
-            </Col>
-            <Col xs={4}>
+            <Col xs={6}>
               <RuleSimulation rule={rule} />
             </Col>
-          </Row>
-        </Col>
+          </Col>
+        </Row>
         <Col xs={12}>
           <Errors objectWithErrors={rule.rule_builder} />
         </Col>

@@ -83,16 +83,23 @@ const RuleBlockDisplay = ({ block, negatable, onEdit, onDelete, onNegate, return
 
   return (
     <Row>
-      <Col xs={9} md={10}>
+      {block?.outputvariable && (
+      <Col xs={2} md={1}>
+        <Label bsStyle="primary">
+          {`$${block?.outputvariable}`}
+        </Label>
+      </Col>
+      )}
+      <Col xs={6} md={block?.outputvariable ? 8 : 10}>
         <Row>
           <Col md={12}>
-            <h3>
+            <p>
               {negatable
               && <NegationButton bsStyle="primary" $negate={block?.negate ? 1 : 0} onClick={(e) => { e.target.blur(); onNegate(); }}>Not</NegationButton>}
               {block?.step_title}
-            </h3>
+            </p>
 
-            {block?.outputvariable && (
+            {/* {block?.outputvariable && (
             <OutputVariable>
               <OutputIcon name="level-up-alt" rotation={90} />
               <Label bsStyle="primary">
@@ -104,11 +111,20 @@ const RuleBlockDisplay = ({ block, negatable, onEdit, onDelete, onNegate, return
               </TypeLabel>
               )}
             </OutputVariable>
-            )}
+            )} */}
           </Col>
         </Row>
         <Errors objectWithErrors={block} />
       </Col>
+      {block?.outputvariable && (
+      <Col xs={2} md={1} className="text-right">
+        {block?.outputvariable && returnTypeLabel && (
+        <TypeLabel bsStyle="default">
+          {returnTypeLabel}
+        </TypeLabel>
+        )}
+      </Col>
+      )}
       <Col xs={3} md={2} className="text-right">
         <IconButton name="edit" onClick={onEdit} title="Edit" />
         <IconButton name="trash-alt" onClick={onDelete} title="Delete" />

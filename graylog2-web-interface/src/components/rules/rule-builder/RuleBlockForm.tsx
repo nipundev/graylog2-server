@@ -47,11 +47,11 @@ type Props = {
   type: BlockType,
 }
 
-const FormTitle = styled.h3(({ theme }) => css`
+const FormTitle = styled.label(({ theme }) => css`
   margin-bottom: ${theme.spacings.sm};
 `);
 
-const BlockTitle = styled.h3(({ theme }) => css`
+const BlockTitle = styled.p(({ theme }) => css`
   margin-bottom: ${theme.spacings.xs};
 `);
 
@@ -60,10 +60,10 @@ const BlockDescription = styled.p(({ theme }) => css`
 `);
 
 const SelectedBlock = styled.div(({ theme }) => css`
-  border-left: 1px solid ${theme.colors.input.border};
-  border-right: 1px solid ${theme.colors.input.border};
   border-bottom: 1px solid ${theme.colors.input.border};
-  padding: ${theme.spacings.md};
+  border-right: 1px solid ${theme.colors.input.border};
+  border-left: 1px solid ${theme.colors.input.border};
+  padding: ${theme.spacings.xs} ${theme.spacings.md} ${theme.spacings.md};
 `);
 
 const SelectedBlockInfo = styled(Row)(({ theme }) => css`

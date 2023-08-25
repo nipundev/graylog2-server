@@ -26,13 +26,8 @@ type Props = {
   objectWithErrors: ObjectWithErrors,
 }
 
-const ErrorsContainer = styled(Row)(({ theme }) => css`
-  margin-top: ${theme.spacings.sm};
-`);
-
 const Error = styled.p(({ theme }) => css`
   color: ${theme.colors.variant.danger};
-  margin-top: ${theme.spacings.xs};
   margin-bottom: ${theme.spacings.xs};
 `);
 
@@ -42,7 +37,7 @@ const Errors = ({ objectWithErrors } : Props) => {
   if (!(objectWithErrors.errors.length > 0)) { return null; }
 
   return (
-    <ErrorsContainer>
+    <Row>
       <Col md={12}>
         {objectWithErrors?.errors?.map((error) => (
           <Row key={error}>
@@ -52,7 +47,7 @@ const Errors = ({ objectWithErrors } : Props) => {
           </Row>
         ))}
       </Col>
-    </ErrorsContainer>
+    </Row>
   );
 };
 
