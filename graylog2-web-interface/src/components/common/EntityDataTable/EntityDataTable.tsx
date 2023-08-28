@@ -222,7 +222,7 @@ const EntityDataTable = <Entity extends EntityBase>({
   const [selectedEntities, setSelectedEntities] = useState<Array<Entity['id']>>(initialSelection || []);
   const displayActionsCol = typeof rowActions === 'function';
   const displayBulkAction = typeof actions === 'function';
-  const displayBulkSelectCol = typeof onChangeSelection === 'function';
+  const displayBulkSelectCol = typeof onChangeSelection === 'function' || typeof actions === 'function';
   const displayPageSizeSelect = typeof onPageSizeChange === 'function';
 
   const accessibleColumns = useMemo(
