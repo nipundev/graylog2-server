@@ -16,8 +16,7 @@
  */
 import * as React from 'react';
 import styled, { css } from 'styled-components';
-import type { SetStateAction } from 'react';
-import { useMemo, useState, useCallback, useRef } from 'react';
+import { useMemo, useCallback, useRef } from 'react';
 import type * as Immutable from 'immutable';
 import merge from 'lodash/merge';
 import isFunction from 'lodash/isFunction';
@@ -33,6 +32,7 @@ import useElementDimensions from 'hooks/useElementDimensions';
 import type { Sort } from 'stores/PaginationTypes';
 import { PageSizeSelect } from 'components/common';
 import ExpandedSections from 'components/common/EntityDataTable/ExpandedSections';
+import useSelectedEntities from 'components/common/EntityDataTable/hooks/useSelectedEntities';
 
 import BulkActionsRow from './BulkActionsRow';
 import TableHead from './TableHead';
@@ -219,7 +219,7 @@ const EntityDataTable = <Entity extends EntityBase>({
   visibleColumns,
 }: Props<Entity>) => {
   const currentUser = useCurrentUser();
-  const [selectedEntities, setSelectedEntities] = useState<Array<Entity['id']>>(initialSelection || []);
+  const [selectedEntities, setSelectedEntities] = useSelectedEntities<Entity['id']>(initialSelection, onChangeSelection);
   const displayActionsCol = typeof rowActions === 'function';
   const displayBulkAction = typeof actions === 'function';
   const displayBulkSelectCol = typeof onChangeSelection === 'function' || typeof actions === 'function';
@@ -259,7 +259,7 @@ const EntityDataTable = <Entity extends EntityBase>({
 
       return [...cur, itemId];
     }));
-  }, [_setSelectedEntities]);
+  }, [setSelectedEntities]);
 
   return (
     <ExpandedSectionsProvider>
