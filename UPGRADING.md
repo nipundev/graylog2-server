@@ -6,6 +6,7 @@ Upgrading to Graylog 5.2.x
 - New pipeline rule functions for manipulating maps: `map_set` and `map_remove`.
 
 ## Breaking Changes
+- If you use the DataNode, the system clocks of the nodes have to be synchronized with an external source for JWT usage (within a margin of a couple of seconds).
 
 ### Migrating from legacy index templates to composable index templates
 
@@ -43,12 +44,13 @@ The following Java Code API changes have been made.
 ## REST API Endpoint Changes
 The following REST API changes have been made.
 
-| Endpoint                                 | Description                                |
-|------------------------------------------|--------------------------------------------|
+| Endpoint                                 | Description                                         |
+|------------------------------------------|-----------------------------------------------------|
 | `GET /contentstream/settings/{username}` | Retrieve Content Stream settings for specified user |
-| `PUT /contentstream/enable/{username}`   | Enable Content Stream for specified user   |
-| `PUT /contentstream/disable/{username}`  | Disable Content Stream for specified user  |
-| `PUT /contentstream/topics/{username}`   | Update per user Content Stream topic list  |
+| `PUT /contentstream/enable/{username}`   | Enable Content Stream for specified user            |
+| `PUT /contentstream/disable/{username}`  | Disable Content Stream for specified user           |
+| `PUT /contentstream/topics/{username}`   | Update per user Content Stream topic list           |
+| `GET /contentstream/tags`                | Retrieve Content Stream tags based on license       |
 
 
 
