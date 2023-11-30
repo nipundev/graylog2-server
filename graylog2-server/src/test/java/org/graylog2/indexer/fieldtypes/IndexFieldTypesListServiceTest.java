@@ -17,6 +17,7 @@
 package org.graylog2.indexer.fieldtypes;
 
 import com.google.common.collect.ImmutableSet;
+import org.graylog2.database.filtering.inmemory.InMemoryFilterExpressionParser;
 import org.graylog2.indexer.MongoIndexSet;
 import org.graylog2.indexer.fieldtypes.utils.FieldTypeDTOsMerger;
 import org.graylog2.indexer.indexset.CustomFieldMapping;
@@ -56,17 +57,28 @@ class IndexFieldTypesListServiceTest {
 
     @BeforeEach
     void setUp() {
-        toTest = new IndexFieldTypesListService(indexFieldTypesService, indexSetService, indexSetFactory, new FieldTypeDTOsMerger());
+        toTest = new IndexFieldTypesListService(indexFieldTypesService, indexSetService, indexSetFactory, new FieldTypeDTOsMerger(), new InMemoryFilterExpressionParser());
     }
 
     @Test
     void testReturnsEmptyPageOnWrongIndexId() {
         doReturn(Optional.empty()).when(indexSetService).get("I_do_not_exist!");
 
-        final PageListResponse<IndexSetFieldType> response = toTest.getIndexSetFieldTypesList("I_do_not_exist!", 0, 10, "index_set_id", Sorting.Direction.ASC);
+        final PageListResponse<IndexSetFieldType> response = toTest.getIndexSetFieldTypesListPage("I_do_not_exist!", "", List.of(), 0, 10, "index_set_id", Sorting.Direction.ASC);
 
         assertEquals(0, response.total());
         assertTrue(response.elements().isEmpty());
+
+        verifyNoInteractions(indexFieldTypesService);
+        verifyNoInteractions(indexSetFactory);
+    }
+
+    @Test
+    void testReturnsEmptyResultOnWrongIndexIdForAllCall() {
+        doReturn(Optional.empty()).when(indexSetService).get("I_do_not_exist!");
+
+        final List<IndexSetFieldType> response = toTest.getIndexSetFieldTypesList("I_do_not_exist!", "", List.of(), "index_set_id", Sorting.Direction.ASC);
+        assertTrue(response.isEmpty());
 
         verifyNoInteractions(indexFieldTypesService);
         verifyNoInteractions(indexSetFactory);
@@ -80,10 +92,25 @@ class IndexFieldTypesListServiceTest {
         doReturn(null).when(indexSetFactory).create(indexSetConfig);
 
 
-        final PageListResponse<IndexSetFieldType> response = toTest.getIndexSetFieldTypesList("I_am_strangely_broken!", 0, 10, "index_set_id", Sorting.Direction.ASC);
+        final PageListResponse<IndexSetFieldType> response = toTest.getIndexSetFieldTypesListPage("I_am_strangely_broken!", "", List.of(), 0, 10, "index_set_id", Sorting.Direction.ASC);
 
         assertEquals(0, response.total());
         assertTrue(response.elements().isEmpty());
+
+        verifyNoInteractions(indexFieldTypesService);
+    }
+
+    @Test
+    void testReturnsEmptyListIfCannotCreateIndexSetFromConfigForAllCall() {
+        IndexSetConfig indexSetConfig = mock(IndexSetConfig.class);
+        doReturn(Optional.of(indexSetConfig)).when(indexSetService).get("I_am_strangely_broken!");
+        doReturn(new CustomFieldMappings()).when(indexSetConfig).customFieldMappings();
+        doReturn(null).when(indexSetFactory).create(indexSetConfig);
+
+
+        final List<IndexSetFieldType> response = toTest.getIndexSetFieldTypesList("I_am_strangely_broken!", "", List.of(), "index_set_id", Sorting.Direction.ASC);
+
+        assertTrue(response.isEmpty());
 
         verifyNoInteractions(indexFieldTypesService);
     }
@@ -121,20 +148,74 @@ class IndexFieldTypesListServiceTest {
                 .findOneByIndexName("graylog_41");
 
 
-        PageListResponse<IndexSetFieldType> response = toTest.getIndexSetFieldTypesList("I_am_fine!", 0, 2, "field_name", Sorting.Direction.ASC);
+        PageListResponse<IndexSetFieldType> response = toTest.getIndexSetFieldTypesListPage("I_am_fine!", "", List.of(), 0, 2, "field_name", Sorting.Direction.ASC);
         assertThat(response.elements())
                 .containsExactly(
                         new IndexSetFieldType("field_1", "ip", true, false),
                         new IndexSetFieldType("field_2", "long", false, false)
                 );
+        List<IndexSetFieldType> allResponse = toTest.getIndexSetFieldTypesList("I_am_fine!", "", List.of(), "field_name", Sorting.Direction.ASC);
+        assertThat(allResponse)
+                .containsExactly(
+                        new IndexSetFieldType("field_1", "ip", true, false),
+                        new IndexSetFieldType("field_2", "long", false, false),
+                        new IndexSetFieldType("field_3", "ip", false, false),
+                        new IndexSetFieldType("field_4", "string", false, false),
+                        new IndexSetFieldType("field_5", "string_fts", false, false)
+                );
 
-        response = toTest.getIndexSetFieldTypesList("I_am_fine!", 0, 2, "field_name", Sorting.Direction.DESC);
+
+        response = toTest.getIndexSetFieldTypesListPage("I_am_fine!", "", List.of(), 0, 2, "field_name", Sorting.Direction.DESC);
         assertThat(response.elements())
                 .containsExactly(
                         new IndexSetFieldType("field_5", "string_fts", false, false),
                         new IndexSetFieldType("field_4", "string", false, false)
                 );
 
+        allResponse = toTest.getIndexSetFieldTypesList("I_am_fine!", "", List.of(), "field_name", Sorting.Direction.DESC);
+        assertThat(allResponse)
+                .containsExactly(
+                        new IndexSetFieldType("field_5", "string_fts", false, false),
+                        new IndexSetFieldType("field_4", "string", false, false),
+                        new IndexSetFieldType("field_3", "ip", false, false),
+                        new IndexSetFieldType("field_2", "long", false, false),
+                        new IndexSetFieldType("field_1", "ip", true, false)
+                );
+
+
+    }
+
+    @Test
+    void testFilteringAndQuerying() {
+        IndexSetConfig indexSetConfig = mock(IndexSetConfig.class);
+        doReturn(Optional.of(indexSetConfig)).when(indexSetService).get("I_am_fine!");
+        final CustomFieldMappings customFieldMappings = new CustomFieldMappings(
+                List.of(new CustomFieldMapping("field_custom", "long")) //expected to be filtered out by "is_custom:false" filter
+        );
+        doReturn(customFieldMappings).when(indexSetConfig).customFieldMappings();
+        MongoIndexSet indexSet = mock(MongoIndexSet.class);
+        doReturn("graylog_0").when(indexSet).getActiveWriteIndex();
+        doReturn(indexSet).when(indexSetFactory).create(indexSetConfig);
+
+        ImmutableSet<FieldTypeDTO> deflectorFields = ImmutableSet.of(
+                FieldTypeDTO.create("field_1", "long"), //expected in results
+                FieldTypeDTO.create("field_2", "long"), //expected in results
+                FieldTypeDTO.create("field_3", "ip"), //expected to be filtered out by "type:long" filter
+                FieldTypeDTO.create("aaaa", "long"), //expected to be filtered out by "field" fieldNameQuery
+                FieldTypeDTO.create("bbb", "long"), //expected to be filtered out by "field" fieldNameQuery
+                FieldTypeDTO.create("ccc", "ip") //expected to be filtered out by "field" fieldNameQuery
+        );
+        IndexFieldTypesDTO deflectorDTO = IndexFieldTypesDTO.create("nvmd", "graylog_0", deflectorFields);
+        doReturn(deflectorDTO)
+                .when(indexFieldTypesService)
+                .findOneByIndexName("graylog_0");
+
+        PageListResponse<IndexSetFieldType> response = toTest.getIndexSetFieldTypesListPage("I_am_fine!", "field", List.of("type:long", "is_custom:false"), 0, 50, "field_name", Sorting.Direction.ASC);
+        assertThat(response.elements())
+                .containsExactly(
+                        new IndexSetFieldType("field_1", "long", false, false),
+                        new IndexSetFieldType("field_2", "long", false, false)
+                );
 
     }
 }
