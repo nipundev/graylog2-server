@@ -450,7 +450,10 @@
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
-
+        <dependency>
+            <groupId>io.github.pixee</groupId>
+            <artifactId>java-security-toolkit</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
@@ -573,9 +576,7 @@
                                      when running OpenSearch under a different user account than the owner of the
                                      OpenSearch config files. (OS packages or container image)
                                 -->
-                                <chmod dir="${project.build.directory}/opensearch"
-                                       includes="opensearch-*/config/**"
-                                       perm="ugo+r" />
+                                <chmod dir="${project.build.directory}/opensearch" includes="opensearch-*/config/**" perm="ugo+r"/>
                             </target>
                         </configuration>
                     </execution>

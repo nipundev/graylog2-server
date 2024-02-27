@@ -16,6 +16,7 @@
  */
 package org.graylog.security.certutil.console;
 
+import io.github.pixee.security.BoundedLineReader;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -36,7 +37,7 @@ public class SystemConsole implements CommandLineConsole {
             printLine(String.format(Locale.ROOT, prompt.question()));
             BufferedReader reader = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8));
             try {
-                return reader.readLine();
+                return BoundedLineReader.readLine(reader, 5_000_000);
             } catch (IOException e) {
                 throw new ConsoleException(e);
             }
