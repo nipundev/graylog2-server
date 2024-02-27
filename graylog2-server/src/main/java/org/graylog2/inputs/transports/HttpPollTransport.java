@@ -23,6 +23,8 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import okhttp3.Headers;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -160,7 +162,7 @@ public class HttpPollTransport extends ThrottleableTransport2 {
         final InetSocketAddress remoteAddress;
         InetSocketAddress remoteAddress1;
         try {
-            final URL url1 = new URL(url);
+            final URL url1 = Urls.create(url, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
             final int port = url1.getPort();
             remoteAddress1 = new InetSocketAddress(url1.getHost(), port != -1 ? port : 80);
         } catch (MalformedURLException e) {

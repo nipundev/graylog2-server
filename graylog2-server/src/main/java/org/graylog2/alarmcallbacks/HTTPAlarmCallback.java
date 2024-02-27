@@ -19,6 +19,8 @@ package org.graylog2.alarmcallbacks;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Maps;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import okhttp3.HttpUrl;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -134,7 +136,7 @@ public class HTTPAlarmCallback implements AlarmCallback {
         }
 
         try {
-            new URL(url);
+            Urls.create(url, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
         } catch (MalformedURLException e) {
             throw new ConfigurationException("Malformed URL '" + url + "'", e);
         }

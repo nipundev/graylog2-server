@@ -21,6 +21,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.eventbus.EventBus;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.google.inject.assistedinject.Assisted;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import org.apache.commons.lang3.StringUtils;
 import org.graylog.integrations.aws.AWSClientBuilderUtil;
 import org.graylog.integrations.aws.AWSMessageType;
@@ -162,7 +164,7 @@ public class KinesisTransport extends ThrottleableTransport2 {
     static void validateEndpoint(String endpoint, String endpointName) throws MisfireException {
         if (StringUtils.isNotEmpty(endpoint)) {
             try {
-                new URL(endpoint).toURI();
+                Urls.create(endpoint, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS).toURI();
             } catch (Exception e) {
                 // Re-throw the exception to fail the input start attempt
                 throw new MisfireException(String.format(Locale.ROOT, "The specified [%s] Override Endpoint [%s] is invalid.",

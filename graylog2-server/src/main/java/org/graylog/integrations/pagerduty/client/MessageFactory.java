@@ -17,6 +17,8 @@
 package org.graylog.integrations.pagerduty.client;
 
 import com.google.common.collect.ImmutableList;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import org.apache.commons.lang3.StringUtils;
 import org.graylog.events.notifications.EventNotificationContext;
 import org.graylog.events.notifications.EventNotificationModelData;
@@ -120,7 +122,7 @@ public class MessageFactory {
             }
         }
         try {
-            return new Link(new URL(streamUrl), stream.getTitle());
+            return new Link(Urls.create(streamUrl, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS), stream.getTitle());
         }
         catch (MalformedURLException e) {
             throw new IllegalStateException("Error when building the stream link URL.", e);

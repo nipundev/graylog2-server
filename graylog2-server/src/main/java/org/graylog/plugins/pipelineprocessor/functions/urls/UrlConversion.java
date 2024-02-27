@@ -17,6 +17,8 @@
 package org.graylog.plugins.pipelineprocessor.functions.urls;
 
 import com.google.common.base.Throwables;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import org.graylog.plugins.pipelineprocessor.EvaluationContext;
 import org.graylog.plugins.pipelineprocessor.ast.functions.AbstractFunction;
 import org.graylog.plugins.pipelineprocessor.ast.functions.FunctionArgs;
@@ -37,7 +39,7 @@ public class UrlConversion extends AbstractFunction<URL> {
     public URL evaluate(FunctionArgs args, EvaluationContext context) {
         final String urlString = String.valueOf(urlParam.required(args, context));
         try {
-            return new URL(urlString);
+            return Urls.create(urlString, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
         } catch (IllegalArgumentException e) {
             log.debug(context.pipelineErrorMessage("Unable to parse URL for string " + urlString), e);
 
@@ -46,7 +48,7 @@ public class UrlConversion extends AbstractFunction<URL> {
                 return null;
             }
             try {
-                return new URL(defaultUrl.get());
+                return Urls.create(defaultUrl.get(), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
             } catch (IllegalArgumentException e1) {
                 log.warn(context.pipelineErrorMessage("Parameter `default` for to_url() is not a valid URL: " + defaultUrl.get()));
                 throw Throwables.propagate(e1);
