@@ -441,7 +441,7 @@ public abstract class CmdLineTool implements CliCommand {
             final Configuration config = bootstrapConfigInjector.getInstance(Configuration.class);
             // TODO do we want this here? We are also considering removing the deprecated CollectorPlugin entirely
             if (config.isCloud()) {
-                if (metadata.getUniqueId().equals("org.graylog.plugins.collector.CollectorPlugin")) {
+                if ("org.graylog.plugins.collector.CollectorPlugin".equals(metadata.getUniqueId())) {
                     continue;
                 }
             }

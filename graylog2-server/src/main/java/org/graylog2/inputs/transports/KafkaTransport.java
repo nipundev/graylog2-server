@@ -230,7 +230,7 @@ public class KafkaTransport extends ThrottleableTransport {
         props.put("bootstrap.servers", configuration.getString(CK_BOOTSTRAP));
         // Map largest -> latest, smallest -> earliest
         final String resetValue = configuration.getString(CK_OFFSET_RESET, DEFAULT_OFFSET_RESET);
-        props.put("auto.offset.reset", resetValue.equals("largest") ? "latest" : "earliest");
+        props.put("auto.offset.reset", "largest".equals(resetValue) ? "latest" : "earliest");
         // Default auto commit interval is 60 seconds. Reduce to 1 second to minimize message duplication
         // if something breaks.
         props.put("auto.commit.interval.ms", "1000");

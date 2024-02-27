@@ -33,7 +33,7 @@ public class CustomFieldMappings extends HashSet<CustomFieldMapping> {
                     type,
                     FieldTypeMapper.TYPE_MAP.entrySet()
                             .stream()
-                            .filter(entry -> !entry.getKey().equals("half_float") && !entry.getKey().equals("scaled_float"))
+                            .filter(entry -> !"half_float".equals(entry.getKey()) && !"scaled_float".equals(entry.getKey()))
                             .filter(entry -> entry.getValue().equals(type))
                             .findFirst()
                             .map(Map.Entry::getKey)

@@ -161,7 +161,7 @@ public class RestHighLevelClientProvider implements Provider<RestHighLevelClient
                         httpClientConfig.addInterceptorFirst(new OpenSearchFilterDeprecationWarningsInterceptor());
                     }
 
-                    if(hosts.stream().anyMatch(host -> host.getScheme().equalsIgnoreCase("https"))) {
+                    if(hosts.stream().anyMatch(host -> "https".equalsIgnoreCase(host.getScheme()))) {
                         httpClientConfig.setSSLContext(trustManagerAndSocketFactoryProvider.getSslContext());
                     }
 

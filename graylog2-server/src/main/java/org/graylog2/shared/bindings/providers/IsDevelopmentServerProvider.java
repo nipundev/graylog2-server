@@ -23,7 +23,7 @@ public class IsDevelopmentServerProvider implements Provider<Boolean> {
 
     public IsDevelopmentServerProvider() {
         final String development = System.getenv("DEVELOPMENT");
-        this.isDevelopmentServer = !(development == null || development.equalsIgnoreCase("false"));
+        this.isDevelopmentServer = !(development == null || "false".equalsIgnoreCase(development));
     }
 
     @Override

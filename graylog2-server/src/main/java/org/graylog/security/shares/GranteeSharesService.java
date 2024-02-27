@@ -85,7 +85,7 @@ public class GranteeSharesService {
                 .filter(entityTypeFilterPredicate(entityTypeFilterString))
                 .map(toEntityDescriptor(targetOwners))
                 .sorted(Comparator.comparing(EntityDescriptor::title, (t1, t2) -> {
-                    if (paginationParameters.getOrder().toLowerCase(Locale.US).equals("desc")) {
+                    if ("desc".equals(paginationParameters.getOrder().toLowerCase(Locale.US))) {
                         return t2.compareTo(t1);
                     }
                     return t1.compareTo(t2);

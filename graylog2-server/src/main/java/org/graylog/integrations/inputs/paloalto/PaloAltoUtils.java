@@ -44,7 +44,7 @@ public class PaloAltoUtils {
         List<String> hexVals = new ArrayList<>();
         String buffer = "";
         for (String textLine : getTextLines()) {
-            if (!textLine.equals("")) {
+            if (!"".equals(textLine)) {
                 buffer += textLine;
             } else {
                 hexVals.add(buffer);

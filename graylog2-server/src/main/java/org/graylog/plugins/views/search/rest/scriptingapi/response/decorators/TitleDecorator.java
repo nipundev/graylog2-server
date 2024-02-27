@@ -56,7 +56,7 @@ public class TitleDecorator implements FieldDecorator {
     }
 
     private boolean acceptsDecorator(@Nullable String decorator) {
-        return decorator == null || decorator.equals("title");
+        return decorator == null || "title".equals(decorator);
     }
 
     @Override

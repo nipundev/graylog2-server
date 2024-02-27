@@ -63,7 +63,7 @@ public class PaginatedStreamService extends PaginatedDbService<StreamDTO> {
         var pipelineBuilder = ImmutableList.<Bson>builder()
                 .add(Aggregates.match(dbQuery));
 
-        if (sortField.equals("index_set_title")) {
+        if ("index_set_title".equals(sortField)) {
             pipelineBuilder.add(Aggregates.lookup(
                             MongoIndexSetService.COLLECTION_NAME,
                             List.of(new Variable<>("index_set_id", doc("$toObjectId", "$index_set_id"))),

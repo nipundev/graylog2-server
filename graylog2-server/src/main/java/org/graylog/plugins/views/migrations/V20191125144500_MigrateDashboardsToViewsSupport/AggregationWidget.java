@@ -82,7 +82,7 @@ public abstract class AggregationWidget implements ViewWidget {
                 .series(config().series().stream().map(series -> series.toSeriesSpec()).collect(Collectors.toList()))
                 .sort(config().sort().stream().map(sort -> sort.toSortSpec()).collect(Collectors.toList()));
 
-        if (config().visualization().equals("numeric") && config().visualizationConfig()
+        if ("numeric".equals(config().visualization()) && config().visualizationConfig()
                 .map(visualizationConfig -> ((NumberVisualizationConfig) visualizationConfig).trend())
                 .orElse(false)) {
             final Pivot chart = chartBuilder

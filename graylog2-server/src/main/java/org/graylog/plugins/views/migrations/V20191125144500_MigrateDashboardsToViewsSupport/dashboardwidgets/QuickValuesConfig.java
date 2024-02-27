@@ -138,7 +138,7 @@ public abstract class QuickValuesConfig extends WidgetConfigBase implements Widg
         final AggregationWidget pieWidget = viewWidgets.stream()
                 .filter(viewWidget -> viewWidget instanceof AggregationWidget)
                 .map(viewWidget -> (AggregationWidget)viewWidget)
-                .filter(viewWidget -> viewWidget.config().visualization().equals(VISUALIZATION_PIE))
+                .filter(viewWidget -> VISUALIZATION_PIE.equals(viewWidget.config().visualization()))
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("Unable to retrieve pie widget again."));
 
@@ -153,7 +153,7 @@ public abstract class QuickValuesConfig extends WidgetConfigBase implements Widg
         final AggregationWidget tableWidget = viewWidgets.stream()
                 .filter(viewWidget -> viewWidget instanceof AggregationWidget)
                 .map(viewWidget -> (AggregationWidget)viewWidget)
-                .filter(viewWidget -> viewWidget.config().visualization().equals(VISUALIZATION_TABLE))
+                .filter(viewWidget -> VISUALIZATION_TABLE.equals(viewWidget.config().visualization()))
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("Unable to retrieve table widget again."));
 

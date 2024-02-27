@@ -156,8 +156,8 @@ public class V20230601104500_AddSourcesPageV2 extends Migration {
                 .map(id -> contentPackInstallationPersistenceService.findByContentPackId(ModelId.of(id)))
                 .flatMap(installations -> installations.stream()
                         .filter(installation -> installation.contentPackRevision() == 1
-                                && installation.createdBy().equals("admin")
-                                && installation.comment().equals("Add Sources Page"))
+                                && "admin".equals(installation.createdBy())
+                                && "Add Sources Page".equals(installation.comment()))
                         .findFirst());
     }
 

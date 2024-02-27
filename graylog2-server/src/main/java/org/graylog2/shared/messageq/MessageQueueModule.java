@@ -56,7 +56,7 @@ public class MessageQueueModule extends PluginModule {
                 break;
         }
 
-        if (configuration.getMessageJournalMode().equals(DISK_JOURNAL_MODE)) {
+        if (DISK_JOURNAL_MODE.equals(configuration.getMessageJournalMode())) {
             install(new LocalKafkaJournalModule());
             serviceBinder().addBinding().to(LocalKafkaJournal.class).in(Scopes.SINGLETON);
         } else {

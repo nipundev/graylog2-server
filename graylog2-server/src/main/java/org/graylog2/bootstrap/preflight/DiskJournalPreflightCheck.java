@@ -81,7 +81,7 @@ public class DiskJournalPreflightCheck implements PreflightCheck {
                     ));
                 }
             }
-            if (journalFs.typeName() != null && journalFs.typeName().equals("Network Disk")) {
+            if (journalFs.typeName() != null && "Network Disk".equals(journalFs.typeName())) {
                 final String message = StringUtils.f(
                         "Journal directory <%s> should not be on a network file system (%s)!",
                         journalDirectory.toAbsolutePath(),

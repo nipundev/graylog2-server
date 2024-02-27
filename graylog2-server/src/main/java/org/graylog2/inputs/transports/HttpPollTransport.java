@@ -218,7 +218,7 @@ public class HttpPollTransport extends ThrottleableTransport2 {
         final Request.Builder requestBuilder = new Request.Builder();
 
         final String httpMethod = configuration.getString(CK_HTTP_METHOD);
-        if (httpMethod == null || httpMethod.equals(GET)) {
+        if (httpMethod == null || GET.equals(httpMethod)) {
             return requestBuilder.get();
         }
 

@@ -67,7 +67,7 @@ public abstract class GRN {
         if (tokens.size() != 6) {
             throw new IllegalArgumentException(String.format(Locale.US, "<%s> is not a valid GRN string", grn));
         }
-        if (!tokens.get(0).equals("grn")) {
+        if (!"grn".equals(tokens.get(0))) {
             throw new IllegalArgumentException(String.format(Locale.US, "<%s> is not a grn scheme", tokens.get(0)));
         }
         final String type = tokens.get(4);

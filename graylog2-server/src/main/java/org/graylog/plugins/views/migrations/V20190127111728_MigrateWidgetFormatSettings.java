@@ -76,7 +76,7 @@ public class V20190127111728_MigrateWidgetFormatSettings extends Migration {
                     @SuppressWarnings("unchecked") final List<Document> widgets = (List) state.get("widgets");
                     for (final Document widget : widgets) {
                         final String type = widget.getString("type");
-                        if (type.equals("aggregation")) {
+                        if ("aggregation".equals(type)) {
                             final Document config = widget.get("config", Document.class);
                             final Document formatSettings = config.get("formatting_settings", Document.class);
                             if (formatSettings == null) {

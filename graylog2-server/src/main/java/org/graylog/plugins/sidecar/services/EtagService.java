@@ -103,7 +103,7 @@ public class EtagService extends AbstractIdleService {
             case REGISTRATION -> registrationCache;
         };
 
-        if (event.cacheKey().equals("")) {
+        if ("".equals(event.cacheKey())) {
             LOG.trace("Invalidating {} cache for all keys", event.cacheContext());
             cache.invalidateAll();
         } else {

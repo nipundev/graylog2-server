@@ -25,7 +25,7 @@ public interface CommandLineConsole {
     default boolean readBoolean(Prompt prompt) {
         final String response = readLine(prompt)
                 .trim().toLowerCase(Locale.ROOT);
-        return response.equals("y") || response.equals("yes");
+        return "y".equals(response) || "yes".equals(response);
     }
 
     default int readInt(Prompt prompt) {

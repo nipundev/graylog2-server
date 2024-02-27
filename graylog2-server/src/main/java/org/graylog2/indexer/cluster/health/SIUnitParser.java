@@ -50,10 +50,10 @@ public class SIUnitParser {
             return (long) (Double.parseDouble(lowerSValue.substring(0, lowerSValue.length() - 2)) * C5);
         } else if (lowerSValue.endsWith("b")) {
             return Long.parseLong(lowerSValue.substring(0, lowerSValue.length() - 1).trim());
-        } else if (lowerSValue.equals("-1")) {
+        } else if ("-1".equals(lowerSValue)) {
             // Allow this special value to be unit-less:
             return -1L;
-        } else if (lowerSValue.equals("0")) {
+        } else if ("0".equals(lowerSValue)) {
             // Allow this special value to be unit-less:
             return 0L;
         }

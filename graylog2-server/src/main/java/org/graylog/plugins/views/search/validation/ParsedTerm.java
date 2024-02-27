@@ -44,12 +44,12 @@ public abstract class ParsedTerm {
     }
 
     public boolean isExistsField() {
-        return field().equals(EXISTS);
+        return EXISTS.equals(field());
     }
 
 
     public boolean isDefaultField() {
-        return field().equals(DEFAULT_FIELD);
+        return DEFAULT_FIELD.equals(field());
     }
 
     public String getRealFieldName() {

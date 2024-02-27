@@ -177,8 +177,8 @@ public class ElasticsearchClient {
     private boolean isMasterNotDiscoveredException(ElasticsearchException elasticsearchException) {
         try {
             final ParsedElasticsearchException parsedException = ParsedElasticsearchException.from(elasticsearchException.getMessage());
-            return parsedException.type().equals("master_not_discovered_exception")
-                    || (parsedException.type().equals("cluster_block_exception") && parsedException.reason().contains("no master"));
+            return "master_not_discovered_exception".equals(parsedException.type())
+                    || ("cluster_block_exception".equals(parsedException.type()) && parsedException.reason().contains("no master"));
         } catch (Exception e) {
             return false;
         }
@@ -197,7 +197,7 @@ public class ElasticsearchClient {
 
         try {
             final ParsedElasticsearchException parsedException = ParsedElasticsearchException.from(elasticsearchException.getMessage());
-            if (parsedException.type().equals("search_phase_execution_exception")) {
+            if ("search_phase_execution_exception".equals(parsedException.type())) {
                 ParsedElasticsearchException parsedCause = ParsedElasticsearchException.from(elasticsearchException.getRootCause().getMessage());
                 return parsedCause.reason().contains("Batch size is too large");
             }

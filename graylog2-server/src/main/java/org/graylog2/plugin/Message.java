@@ -412,7 +412,7 @@ public class Message implements Messages, Indexable {
 
         for (Map.Entry<String, Object> entry : fields.entrySet()) {
             final String key = entry.getKey();
-            if (key.equals(FIELD_ID)) {
+            if (FIELD_ID.equals(key)) {
                 continue;
             }
 

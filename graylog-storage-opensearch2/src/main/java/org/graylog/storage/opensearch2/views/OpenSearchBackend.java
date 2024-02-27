@@ -95,7 +95,7 @@ public class OpenSearchBackend implements QueryBackend<OSGeneratedQueryContext> 
     }
 
     private QueryBuilder translateQueryString(String queryString) {
-        return (queryString.isEmpty() || queryString.trim().equals("*"))
+        return (queryString.isEmpty() || "*".equals(queryString.trim()))
                 ? QueryBuilders.matchAllQuery()
                 : QueryBuilders.queryStringQuery(queryString).allowLeadingWildcard(allowLeadingWildcard);
     }

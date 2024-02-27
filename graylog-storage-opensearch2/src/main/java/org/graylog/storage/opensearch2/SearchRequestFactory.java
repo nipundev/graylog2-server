@@ -146,7 +146,7 @@ public class SearchRequestFactory {
 
 
     private boolean isWildcardQuery(String filter) {
-        return normalizeQuery(filter).equals("*");
+        return "*".equals(normalizeQuery(filter));
     }
 
     private String normalizeQuery(String query) {

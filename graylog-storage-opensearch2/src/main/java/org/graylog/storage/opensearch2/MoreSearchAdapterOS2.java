@@ -81,7 +81,7 @@ public class MoreSearchAdapterOS2 implements MoreSearchAdapter {
     public MoreSearch.Result eventSearch(String queryString, TimeRange timerange, Set<String> affectedIndices,
                                          Sorting sorting, int page, int perPage, Set<String> eventStreams,
                                          String filterString, Set<String> forbiddenSourceStreams) {
-        final QueryBuilder query = (queryString.isEmpty() || queryString.equals("*")) ?
+        final QueryBuilder query = (queryString.isEmpty() || "*".equals(queryString)) ?
                 matchAllQuery() :
                 queryStringQuery(queryString).allowLeadingWildcard(allowLeadingWildcard);
 

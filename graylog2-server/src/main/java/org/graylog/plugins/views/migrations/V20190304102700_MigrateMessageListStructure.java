@@ -82,7 +82,7 @@ public class V20190304102700_MigrateMessageListStructure extends Migration {
                         @SuppressWarnings("unchecked") final List<Document> widgets = (List) state.get("widgets");
                         for (final Document widget : widgets) {
                             final String type = widget.getString("type");
-                            if (type.equals("messages")) {
+                            if ("messages".equals(type)) {
                                 final Document config = widget.get("config", Document.class);
                                 @SuppressWarnings("unchecked") final List<String> fields = (List) config.get("fields");
                                 fields.add(0, "timestamp");

@@ -40,6 +40,6 @@ public abstract class StackedSeries {
             @JsonProperty("statistical_function") String statisticalFunction
     ) {
         final String cleanedQuery = Strings.nullToEmpty(query).trim();
-        return new AutoValue_StackedSeries(cleanedQuery.equals("") ? "*" : cleanedQuery, field, statisticalFunction);
+        return new AutoValue_StackedSeries("".equals(cleanedQuery) ? "*" : cleanedQuery, field, statisticalFunction);
     }
 }

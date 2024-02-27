@@ -66,7 +66,7 @@ public abstract class ElasticsearchQueryString implements BackendQuery {
     @JsonIgnore
     public boolean isEmpty() {
         String trimmed = queryString().trim();
-        return trimmed.equals("") || trimmed.equals("*");
+        return "".equals(trimmed) || "*".equals(trimmed);
     }
 
     public ElasticsearchQueryString concatenate(ElasticsearchQueryString other) {

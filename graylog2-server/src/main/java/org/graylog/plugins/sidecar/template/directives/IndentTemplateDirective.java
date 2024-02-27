@@ -51,7 +51,7 @@ public class IndentTemplateDirective implements TemplateDirectiveModel {
             String paramName = (String) parameter.getKey();
             TemplateModel paramValue = (TemplateModel) parameter.getValue();
 
-            if (paramName.equals(PARAM_NAME_COUNT)) {
+            if (PARAM_NAME_COUNT.equals(paramName)) {
                 if (!(paramValue instanceof TemplateNumberModel)) {
                     throw new TemplateModelException("Parameter '" + PARAM_NAME_COUNT + "' must be a number.");
                 }

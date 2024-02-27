@@ -39,7 +39,7 @@ public class LineCountingCharStream implements CharStream {
         } catch (IOException e) {
             // in case of error we won't be able to detect current position from our own counting (won't be called),
             // we have to increment here manually
-            if(e.getMessage().equals("read past eof")) {
+            if("read past eof".equals(e.getMessage())) {
                 tokenLineCounter.incrementTokenStartPositionOnError();
             }
             throw e;

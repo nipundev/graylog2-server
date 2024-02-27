@@ -177,8 +177,8 @@ public class OpenSearchClient {
     private boolean isMasterNotDiscoveredException(OpenSearchException openSearchException) {
         try {
             final ParsedOpenSearchException parsedException = ParsedOpenSearchException.from(openSearchException.getMessage());
-            return parsedException.type().equals("master_not_discovered_exception")
-                    || (parsedException.type().equals("cluster_block_exception") && parsedException.reason().contains("no master"));
+            return "master_not_discovered_exception".equals(parsedException.type())
+                    || ("cluster_block_exception".equals(parsedException.type()) && parsedException.reason().contains("no master"));
         } catch (Exception e) {
             return false;
         }
@@ -197,7 +197,7 @@ public class OpenSearchClient {
 
         try {
             final ParsedOpenSearchException parsedException = ParsedOpenSearchException.from(openSearchException.getMessage());
-            if (parsedException.type().equals("search_phase_execution_exception")) {
+            if ("search_phase_execution_exception".equals(parsedException.type())) {
                 ParsedOpenSearchException parsedCause = ParsedOpenSearchException.from(openSearchException.getRootCause().getMessage());
                 return parsedCause.reason().contains("Batch size is too large");
             }
