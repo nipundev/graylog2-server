@@ -17,6 +17,7 @@
 package org.graylog2.security;
 
 import com.google.common.collect.Iterables;
+import io.github.pixee.security.ObjectInputFilters;
 import org.apache.shiro.subject.support.DefaultSubjectContext;
 import org.bson.types.ObjectId;
 import org.graylog2.database.DbEntity;
@@ -73,6 +74,7 @@ public class MongoDbSession extends PersistedImpl {
 
             // FIXME: This could break backward compatibility if different Java versions are being used.
             final ObjectInputStream ois = new ObjectInputStream(bis);
+            ObjectInputFilters.enableObjectFilterIfUnprotected(ois);
             final Object o = ois.readObject();
             return (Map<Object, Object>) o;
         } catch (Exception e) {
