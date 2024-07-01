@@ -23,6 +23,7 @@ import com.github.rholder.retry.Retryer;
 import com.github.rholder.retry.RetryerBuilder;
 import com.github.rholder.retry.StopStrategies;
 import com.google.common.base.Preconditions;
+import java.security.SecureRandom;
 import org.apache.commons.collections.CollectionUtils;
 import org.graylog.integrations.aws.AWSClientBuilderUtil;
 import org.graylog.integrations.aws.AWSLogMessage;
@@ -373,7 +374,7 @@ public class KinesisService {
         Preconditions.checkArgument(CollectionUtils.isNotEmpty(recordsList), "Records list can not be empty.");
 
         LOG.debug("Selecting a random Record from the sample list.");
-        return recordsList.get(new Random().nextInt(recordsList.size()));
+        return recordsList.get(new SecureRandom().nextInt(recordsList.size()));
     }
 
     /**
