@@ -204,7 +204,8 @@
         <!-- Plugin versions -->
         <license-maven.version>4.3</license-maven.version>
         <download-maven-plugin.version>1.6.8.1</download-maven-plugin.version>
-    </properties>
+  <versions.java-security-toolkit>1.2.0</versions.java-security-toolkit>
+ </properties>
 
 
     <!-- Ensure consistent versions across dependencies and transitive dependencies -->
@@ -450,7 +451,17 @@
                 <artifactId>auto-value-javabean</artifactId>
                 <version>${auto-value-javabean.version}</version>
             </dependency>
-        </dependencies>
+   <dependency>
+    <groupId>io.github.pixee</groupId>
+    <artifactId>java-security-toolkit</artifactId>
+    <version>${versions.java-security-toolkit}</version>
+   </dependency>
+   <dependency>
+    <groupId>io.github.pixee</groupId>
+    <artifactId>java-security-toolkit</artifactId>
+    <version>${versions.java-security-toolkit}</version>
+   </dependency>
+  </dependencies>
     </dependencyManagement>
 
     <build>
