@@ -20,6 +20,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.google.common.primitives.Ints;
+import java.security.SecureRandom;
 import org.graylog2.plugin.Message;
 import org.graylog2.plugin.Tools;
 import org.joda.time.DateTime;
@@ -35,7 +36,7 @@ import static org.graylog2.inputs.random.generators.FakeHttpRawMessageGenerator.
 import static org.graylog2.inputs.random.generators.FakeHttpRawMessageGenerator.GeneratorState.Method.PUT;
 
 public class FakeHttpRawMessageGenerator {
-    private static final Random RANDOM = new Random();
+    private static final Random RANDOM = new SecureRandom();
     private static final int MAX_WEIGHT = 50;
     private long msgSequenceNumber;
 
