@@ -450,7 +450,10 @@
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
-
+        <dependency>
+            <groupId>io.github.pixee</groupId>
+            <artifactId>java-security-toolkit</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
@@ -573,9 +576,7 @@
                                      when running OpenSearch under a different user account than the owner of the
                                      OpenSearch config files. (OS packages or container image)
                                 -->
-                                <chmod dir="${project.build.directory}/opensearch"
-                                       includes="opensearch-*/config/**"
-                                       perm="ugo+r" />
+                                <chmod dir="${project.build.directory}/opensearch" includes="opensearch-*/config/**" perm="ugo+r"/>
                             </target>
                         </configuration>
                     </execution>
@@ -588,30 +589,30 @@
                         <configuration>
                             <target>
                                 <!-- Remove unused OpenSearch plugins -->
-                                <delete dir="${project.build.directory}/opensearch/opensearch-${opensearch.version}-linux-x64/plugins/opensearch-alerting" />
-                                <delete dir="${project.build.directory}/opensearch/opensearch-${opensearch.version}-linux-x64/plugins/opensearch-custom-codecs" />
-                                <delete dir="${project.build.directory}/opensearch/opensearch-${opensearch.version}-linux-x64/plugins/opensearch-geospatial" />
-                                <delete dir="${project.build.directory}/opensearch/opensearch-${opensearch.version}-linux-x64/plugins/opensearch-index-management" />
-                                <delete dir="${project.build.directory}/opensearch/opensearch-${opensearch.version}-linux-x64/plugins/opensearch-knn" />
-                                <delete dir="${project.build.directory}/opensearch/opensearch-${opensearch.version}-linux-x64/plugins/opensearch-neural-search" />
-                                <delete dir="${project.build.directory}/opensearch/opensearch-${opensearch.version}-linux-x64/plugins/opensearch-notifications" />
-                                <delete dir="${project.build.directory}/opensearch/opensearch-${opensearch.version}-linux-x64/plugins/opensearch-notifications-core" />
-                                <delete dir="${project.build.directory}/opensearch/opensearch-${opensearch.version}-linux-x64/plugins/opensearch-performance-analyzer" />
-                                <delete dir="${project.build.directory}/opensearch/opensearch-${opensearch.version}-linux-x64/plugins/opensearch-reports-scheduler" />
-                                <delete dir="${project.build.directory}/opensearch/opensearch-${opensearch.version}-linux-x64/plugins/opensearch-security-analytics" />
-                                <delete dir="${project.build.directory}/opensearch/opensearch-${opensearch.version}-linux-x64/plugins/opensearch-sql" />
-                                <delete dir="${project.build.directory}/opensearch/opensearch-${opensearch.version}-linux-aarch64/plugins/opensearch-alerting" />
-                                <delete dir="${project.build.directory}/opensearch/opensearch-${opensearch.version}-linux-aarch64/plugins/opensearch-custom-codecs" />
-                                <delete dir="${project.build.directory}/opensearch/opensearch-${opensearch.version}-linux-aarch64/plugins/opensearch-geospatial" />
-                                <delete dir="${project.build.directory}/opensearch/opensearch-${opensearch.version}-linux-aarch64/plugins/opensearch-index-management" />
-                                <delete dir="${project.build.directory}/opensearch/opensearch-${opensearch.version}-linux-aarch64/plugins/opensearch-knn" />
-                                <delete dir="${project.build.directory}/opensearch/opensearch-${opensearch.version}-linux-aarch64/plugins/opensearch-neural-search" />
-                                <delete dir="${project.build.directory}/opensearch/opensearch-${opensearch.version}-linux-aarch64/plugins/opensearch-notifications" />
-                                <delete dir="${project.build.directory}/opensearch/opensearch-${opensearch.version}-linux-aarch64/plugins/opensearch-notifications-core" />
-                                <delete dir="${project.build.directory}/opensearch/opensearch-${opensearch.version}-linux-aarch64/plugins/opensearch-performance-analyzer" />
-                                <delete dir="${project.build.directory}/opensearch/opensearch-${opensearch.version}-linux-aarch64/plugins/opensearch-reports-scheduler" />
-                                <delete dir="${project.build.directory}/opensearch/opensearch-${opensearch.version}-linux-aarch64/plugins/opensearch-security-analytics" />
-                                <delete dir="${project.build.directory}/opensearch/opensearch-${opensearch.version}-linux-aarch64/plugins/opensearch-sql" />
+                                <d
+                                <d
+                                <d
+                                <d
+                                <d
+                                <d
+                                <d
+                                <d
+                                <d
+                                <d
+                                <d
+                                <d
+                                <d
+                                <d
+                                <d
+                                <d
+                                <d
+                                <d
+                                <d
+                                <d
+                                <d
+                                <d
+                                <d
+                                </t
                             </target>
                         </configuration>
                     </execution>

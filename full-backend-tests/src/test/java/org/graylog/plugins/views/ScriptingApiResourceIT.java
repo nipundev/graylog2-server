@@ -17,6 +17,7 @@
 package org.graylog.plugins.views;
 
 import au.com.bytecode.opencsv.CSVParser;
+import io.github.pixee.security.BoundedLineReader;
 import io.restassured.http.Header;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.ValidatableResponse;
@@ -404,7 +405,7 @@ public class ScriptingApiResourceIT {
 
         try (final var reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
             while (reader.ready()) {
-                lines.add(csvParser.parseLine(reader.readLine()));
+                lines.add(csvParser.parseLine(BoundedLineReader.readLine(reader, 5_000_000)));
             }
         }
 
