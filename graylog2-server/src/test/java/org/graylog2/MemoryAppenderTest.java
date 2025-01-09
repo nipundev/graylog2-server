@@ -16,6 +16,7 @@
  */
 package org.graylog2;
 
+import java.security.SecureRandom;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.LogEvent;
 import org.apache.logging.log4j.core.impl.Log4jLogEvent;
@@ -126,7 +127,7 @@ public class MemoryAppenderTest {
     }
 
     private String getRandomString() {
-        var random = new Random();
+        var random = new SecureRandom();
         String randomString = random.ints(97, 122 + 1)
                 .limit(100)
                 .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
