@@ -18,6 +18,7 @@ package org.graylog.datanode.management;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import io.github.pixee.security.BoundedLineReader;
 import org.apache.commons.exec.OS;
 import org.graylog.datanode.process.OpensearchConfiguration;
 import org.graylog.datanode.process.ProcessInformation;
@@ -60,7 +61,7 @@ public class OpensearchCommandLineProcess implements Closeable {
             try {
                 final Process process = builder.start();
                 final BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream(), Charset.defaultCharset()));
-                var line = reader.readLine();
+                var line = BoundedLineReader.readLine(reader, 5_000_000);
                 if(line != null && Files.exists(Path.of(line))) {
                     final var target = Path.of(line);
                     final var src = Files.createDirectories(jdk.resolve("Contents"));
