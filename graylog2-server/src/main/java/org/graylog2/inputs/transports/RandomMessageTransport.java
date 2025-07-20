@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
+import java.security.SecureRandom;
 import org.graylog2.inputs.random.generators.FakeHttpRawMessageGenerator;
 import org.graylog2.plugin.configuration.Configuration;
 import org.graylog2.plugin.configuration.ConfigurationRequest;
@@ -47,7 +48,7 @@ public class RandomMessageTransport extends GeneratorTransport {
     public static final String CK_SLEEP = "sleep";
     public static final String CK_SLEEP_DEVIATION_PERCENT = "sleep_deviation";
 
-    private final Random rand = new Random();
+    private final Random rand = new SecureRandom();
     private final FakeHttpRawMessageGenerator generator;
     private final int sleepMs;
     private final int maxSleepDeviation;
